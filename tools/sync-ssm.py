@@ -62,9 +62,57 @@ DEFAULT_SERVICES = [
 ]
 
 
+import json
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+import boto3
+from botocore.exceptions import ClientError
+
+
+def find_sops() -> str | None:
+    sops = shutil.which("sops")
+    if sops:
+        return sops
+    # Common fallback locations on Windows when not on PATH
+    candidates = [
+        Path.home() / "tools" / "sops.exe",
+        Path(r"C:\Program Files\sops\sops.exe"),
+        Path(r"C:\ProgramData\chocolatey\bin\sops.exe"),
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return str(candidate)
+    return None
+
+
 def load_json(path: Path) -> dict:
-    with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
+    """Load a JSON file, transparently decrypting with SOPS if it is encrypted."""
+    raw_text = path.read_text(encoding="utf-8")
+    raw_data = json.loads(raw_text)
+
+    if "sops" in raw_data:
+        sops_bin = find_sops()
+        if not sops_bin:
+            raise RuntimeError(
+                f"{path} is SOPS-encrypted but 'sops' binary was not found in PATH. "
+                "Install SOPS or decrypt the file before syncing."
+            )
+        result = subprocess.run(
+            [sops_bin, "-d", str(path)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"SOPS decryption failed for {path}: {result.stderr.strip()}"
+            )
+        return json.loads(result.stdout)
+
+    return raw_data
 
 
 def put_parameter(

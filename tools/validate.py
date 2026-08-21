@@ -61,6 +61,13 @@ def validate_service(tenant_dir: Path, service: str) -> list[str]:
 
     if secrets_file.exists():
         try:
+            raw_text = secrets_file.read_text(encoding="utf-8")
+            raw_data = json.loads(raw_text)
+            if "sops" not in raw_data:
+                errors.append(
+                    f"{service}/secrets.json: plaintext secrets are not allowed in Git. "
+                    "Encrypt with SOPS before committing."
+                )
             secrets_vars = load_json(secrets_file)
         except json.JSONDecodeError as exc:
             errors.append(f"{service}/secrets.json: invalid JSON - {exc}")

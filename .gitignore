@@ -16,6 +16,5 @@ venv/
 *.sops.yaml
 *.sops.json
 
-# IMPORTANT: secrets.json must be encrypted before committing.
-# If you are not using SOPS, keep secrets.json out of Git and uncomment the next line.
-tenants/*/secrets.json
+# NOTE: secrets.json may be committed ONLY if encrypted with SOPS.
+# validate.py rejects plaintext secrets.json to prevent accidental commits.
