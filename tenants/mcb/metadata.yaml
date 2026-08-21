@@ -1,0 +1,23 @@
+tenant: mcb
+environment: prod
+description: Configuration for mcb (prod)
+services:
+- accs-server
+- accs-ui
+- api-aggregator-service
+- business-rules-engine
+- data-ingestion-service-express
+- ecs-cashletter-service-engine
+- ecs-cde-engine
+- ecs-data-services-api-core
+- ecs-dataqualityvalidator
+- ecs-dupdetectengine
+- ecs-exceptioningestionengine
+- ecs-image-archive-engine
+- ecs-image-quality-validator
+- ecs-posting-eod-extract-engine
+- ecs-taeengine
+- file-data-enrichment-engine
+- moov-io-accs
+- moov-io-fed-accs
+ssm_prefix: /fintech/mcb/prod

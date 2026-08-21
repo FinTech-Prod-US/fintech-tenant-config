@@ -1,0 +1,150 @@
+{
+  "accs-server": {
+    "required": [
+      "NODE_ENV",
+      "PORT",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_USER",
+      "DB_NAME",
+      "RULES_DB_NAME",
+      "AWS_REGION",
+      "AWS_ACCOUNT_ID",
+      "JWT_ACCESS_SECRET",
+      "JWT_REFRESH_SECRET",
+      "DB_PASSWORD"
+    ]
+  },
+  "accs-ui": {
+    "required": [
+      "NEXT_PUBLIC_APP_NAME",
+      "NEXT_PUBLIC_BASE_PATH",
+      "NEXT_PUBLIC_JAVA_API_URL",
+      "NEXT_PUBLIC_NODE_API_URL"
+    ]
+  },
+  "api-aggregator-service": {
+    "required": [
+      "NODE_ENV",
+      "HOST",
+      "PORT",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_USER",
+      "DB_PASSWORD",
+      "DB_NAME_BUSINESS_RULES",
+      "DB_NAME",
+      "AWS_REGION",
+      "REDIS_ENABLED",
+      "LOG_LEVEL"
+    ]
+  },
+  "business-rules-engine": {
+    "required": [
+      "NODE_ENV",
+      "PORT",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_USER",
+      "DB_PASSWORD",
+      "DB_NAME_BUSINESS_RULES",
+      "DB_NAME_PRIMARY",
+      "AWS_REGION",
+      "DATA_SERVICES_BASE_URL",
+      "CDE_INPUT_QUEUE_URL",
+      "CDE_OUTPUT_QUEUE_URL",
+      "FDE_OUTPUT_QUEUE_URL",
+      "ENABLE_COMPRESSION",
+      "ENABLE_RATE_LIMITING",
+      "MAX_CASH_LETTERS_PER_FILE",
+      "METRICS_ENABLED",
+      "WORKER_MAX_MESSAGES"
+    ]
+  },
+  "data-ingestion-service-express": {
+    "required": [
+      "NODE_ENV",
+      "PORT",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_USER",
+      "DB_PASSWORD",
+      "DB_NAME_PRIMARY",
+      "AWS_REGION",
+      "S3_BUCKET"
+    ]
+  },
+  "ecs-cashletter-service-engine": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-cde-engine": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-data-services-api-core": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-dataqualityvalidator": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-dupdetectengine": {
+    "required": [
+      "DB_NAME_DUP_DETECT"
+    ]
+  },
+  "ecs-exceptioningestionengine": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-image-archive-engine": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-image-quality-validator": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-posting-eod-extract-engine": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "ecs-taeengine": {
+    "required": [
+      "DB_NAME_PRIMARY"
+    ]
+  },
+  "file-data-enrichment-engine": {
+    "required": [
+      "NODE_ENV",
+      "PORT",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_USER",
+      "DB_PASSWORD",
+      "DB_NAME_PRIMARY",
+      "DB_NAME_BUSINESS_RULES",
+      "DB_NAME_ACCS",
+      "AWS_REGION",
+      "DATA_INGESTION_QUEUE_URL",
+      "BUSINESS_RULES_QUEUE_URL",
+      "BUSINESS_RULES_OUTPUT_QUEUE_URL"
+    ]
+  },
+  "moov-io-accs": {
+    "required": []
+  },
+  "moov-io-fed-accs": {
+    "required": []
+  }
+}

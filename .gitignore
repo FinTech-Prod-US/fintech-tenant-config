@@ -1,0 +1,21 @@
+# Ignore Python cache and local tool artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Ignore virtual environments
+.venv/
+venv/
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore SOPS backup files
+*.sops.yaml
+*.sops.json
+
+# IMPORTANT: secrets.json must be encrypted before committing.
+# If you are not using SOPS, keep secrets.json out of Git and uncomment the next line.
+tenants/*/secrets.json
