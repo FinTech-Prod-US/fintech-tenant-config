@@ -16,5 +16,8 @@ venv/
 *.sops.yaml
 *.sops.json
 
+# But keep the repo's own SOPS config
+!.sops.yaml
+
 # NOTE: secrets.json may be committed ONLY if encrypted with SOPS.
 # validate.py rejects plaintext secrets.json to prevent accidental commits.

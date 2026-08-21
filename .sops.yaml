@@ -1,0 +1,5 @@
+creation_rules:
+  # Encrypt all secrets.json files under tenants/
+  - path_regex: .*secrets\.json$
+    kms: arn:aws:kms:us-east-1:127214157504:key/5e9cc23a-74da-4161-b8b0-9e7bbf360b98
+    encrypted_regex: '^(.*)$'
