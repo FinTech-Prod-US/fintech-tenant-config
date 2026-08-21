@@ -56,12 +56,12 @@ cleartext is only visible when SOPS decrypts it.
 
 ### SOPS workflow
 
-Install SOPS and configure a KMS key in `.sops.yaml`:
+Install SOPS and ensure AWS credentials are available. The `.sops.yaml`
+file in this repo already points to the dedicated KMS key:
 
 ```yaml
-creation_rules:
-  - path_regex: tenants/.*/secrets\.json$
-    kms: arn:aws:kms:us-east-1:127214157504:alias/fintech-tenant-config
+arn:aws:kms:us-east-1:127214157504:key/5e9cc23a-74da-4161-b8b0-9e7bbf360b98
+(alias/fintech-tenant-config)
 ```
 
 Edit a secrets file:
@@ -72,7 +72,10 @@ sops tenants/mcb/api-aggregator-service/secrets.json
 
 SOPS decrypts on open and re-encrypts on save.
 
-### Without SOPS
+**CI/automation:** `tools/sync-ssm.py` automatically decrypts SOPS-encrypted
+`secrets.json` before writing to SSM, provided the `sops` binary is on PATH or
+in one of the common fallback locations (`~/tools/sops.exe`,
+`C:\Program Files\sops\sops.exe`, Chocolatey bin).
 
 For local development and LocalStack testing, plaintext `secrets.json` is
 acceptable. Before committing to Git, either:
