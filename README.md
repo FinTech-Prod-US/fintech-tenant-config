@@ -115,17 +115,15 @@ TENANT=mcb ENV=prod bash scripts/render-env.sh
 
 ## LocalStack testing
 
-Start LocalStack and run the sync against it:
+Start LocalStack and run the sync against it. Use the same region LocalStack
+was configured with (the default in the project setup is `us-east-2`):
 
 ```bash
-aws --endpoint-url http://localhost:4566 ssm create-parameter \
-  --name /dummy --type String --value dummy || true
-
 python tools/sync-ssm.py \
   --tenant mcb \
   --env prod \
   --endpoint-url http://localhost:4566 \
-  --region us-east-1 \
+  --region us-east-2 \
   --apply
 ```
 
@@ -133,7 +131,7 @@ Then verify:
 
 ```bash
 aws --endpoint-url http://localhost:4566 ssm get-parameters-by-path \
-  --path /fintech/mcb/prod --recursive
+  --path /fintech/mcb/prod --recursive --region us-east-2
 ```
 
 ## Adding a new tenant
