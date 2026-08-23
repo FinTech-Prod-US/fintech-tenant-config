@@ -153,6 +153,7 @@ def sync_service(
     service_dir: Path,
     kms_key_id: str | None,
     dry_run: bool,
+    skip_secrets: bool = False,
 ) -> tuple[int, int]:
     base_path = f"/fintech/{tenant}/{env}/{service}/config"
 
@@ -174,7 +175,7 @@ def sync_service(
             )
             string_count += 1
 
-    if secrets_file.exists():
+    if secrets_file.exists() and not skip_secrets:
         for key, value in load_json(secrets_file).items():
             put_parameter(
                 client,
@@ -228,6 +229,11 @@ def main() -> int:
         help="Show changes without writing to SSM",
     )
     parser.add_argument(
+        "--skip-secrets",
+        action="store_true",
+        help="Skip SOPS-encrypted secrets.json (useful for LocalStack without KMS access)",
+    )
+    parser.add_argument(
         "--apply",
         action="store_true",
         help="Required in addition to no --dry-run to apply changes",
@@ -278,6 +284,7 @@ def main() -> int:
             service_dir,
             args.kms_key_id,
             args.dry_run,
+            args.skip_secrets,
         )
         total_string += s_count
         total_secure += sec_count
