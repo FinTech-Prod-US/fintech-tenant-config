@@ -1,6 +1,6 @@
 tenant: mcb
-environment: prod
-description: Configuration for mcb (prod)
+environment: qa
+description: Configuration for mcb (qa)
 services:
 - accs-server
 - accs-ui
@@ -20,7 +20,7 @@ services:
 - file-data-enrichment-engine
 - moov-io-accs
 - moov-io-fed-accs
-ssm_prefix: /fintech/mcb/prod
+ssm_prefix: /fintech/mcb/qa
 
 # AWS provisioning config — used by tools/provision-aws.py
 provision:
