@@ -21,3 +21,19 @@ services:
 - moov-io-accs
 - moov-io-fed-accs
 ssm_prefix: /fintech/mcb/prod
+
+# AWS provisioning config — used by tools/provision-aws.py
+provision:
+  aws_region: us-east-2
+  aws_account_id: "127214157504"
+  sqs_dlq_max_receive_count: 3
+  sqs_visibility_timeout: 30
+  s3_folders:
+    - cpp-raw-files
+    - cpp-processed-files
+    - cpp-errored-files
+    - message-archive
+    - image-archive
+    - validation-results
+    - x9-files
+    - cashletter-output
