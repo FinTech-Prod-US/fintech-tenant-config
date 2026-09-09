@@ -21,6 +21,7 @@ services:
 - moov-io-accs
 - moov-io-fed-accs
 ssm_prefix: /fintech/mcb/qa
+tenant_code: MCB
 
 # AWS provisioning config — used by tools/provision-aws.py
 provision:
@@ -28,12 +29,115 @@ provision:
   aws_account_id: "127214157504"
   sqs_dlq_max_receive_count: 3
   sqs_visibility_timeout: 30
+  # Queues used by services via bare names (not URLs) — not auto-discovered from env.json
+  additional_sqs_queues:
+    - MCB_FROM_CDE_TO_CASHLETTER_ENGINE
+    - MCB_FROM_CASHLETTER_TO_CDE_ENGINE
+    - MCB_FROM_CDE_TO_IMAGE_ARCHIVE_ENGINE
+    - MCB_FROM_IMAGE_ARCHIVE_TO_CDE_ENGINE
+    - MCB_FROM_CDE_TO_SUPERVISOR_APPROVAL
+    - MCB_PIPELINE_STATUS_BROADCAST
   s3_folders:
-    - cpp-raw-files
-    - cpp-processed-files
-    - cpp-errored-files
-    - message-archive
-    - image-archive
-    - validation-results
-    - x9-files
-    - cashletter-output
+    # Test
+    - "{tenant_code}/testlandingzone"
+    # Inclearing
+    - "{tenant_code}/inclearing/inbound"
+    - "{tenant_code}/inclearing/processed"
+    - "{tenant_code}/inclearing/archive"
+    - "{tenant_code}/inclearing/error"
+    - "{tenant_code}/inclearing/duplicate"
+    # Inclearing Return
+    - "{tenant_code}/inclearing-return/inbound"
+    - "{tenant_code}/inclearing-return/processed"
+    - "{tenant_code}/inclearing-return/archive"
+    - "{tenant_code}/inclearing-return/error"
+    - "{tenant_code}/inclearing-return/duplicate"
+    # Outclearing — branch
+    - "{tenant_code}/outclearing/branch/inbound"
+    - "{tenant_code}/outclearing/branch/processed"
+    - "{tenant_code}/outclearing/branch/archive"
+    - "{tenant_code}/outclearing/branch/error"
+    - "{tenant_code}/outclearing/branch/duplicate"
+    # Outclearing — atm
+    - "{tenant_code}/outclearing/atm/inbound"
+    - "{tenant_code}/outclearing/atm/processed"
+    - "{tenant_code}/outclearing/atm/archive"
+    - "{tenant_code}/outclearing/atm/error"
+    - "{tenant_code}/outclearing/atm/duplicate"
+    # Outclearing — mobile
+    - "{tenant_code}/outclearing/mobile/inbound"
+    - "{tenant_code}/outclearing/mobile/processed"
+    - "{tenant_code}/outclearing/mobile/archive"
+    - "{tenant_code}/outclearing/mobile/error"
+    - "{tenant_code}/outclearing/mobile/duplicate"
+    # Outclearing — rdc
+    - "{tenant_code}/outclearing/rdc/inbound"
+    - "{tenant_code}/outclearing/rdc/processed"
+    - "{tenant_code}/outclearing/rdc/archive"
+    - "{tenant_code}/outclearing/rdc/error"
+    - "{tenant_code}/outclearing/rdc/duplicate"
+    # Outclearing — lockbox
+    - "{tenant_code}/outclearing/lockbox/inbound"
+    - "{tenant_code}/outclearing/lockbox/processed"
+    - "{tenant_code}/outclearing/lockbox/archive"
+    - "{tenant_code}/outclearing/lockbox/error"
+    - "{tenant_code}/outclearing/lockbox/duplicate"
+    # Outclearing — correspondent
+    - "{tenant_code}/outclearing/correspondent/inbound"
+    - "{tenant_code}/outclearing/correspondent/processed"
+    - "{tenant_code}/outclearing/correspondent/archive"
+    - "{tenant_code}/outclearing/correspondent/error"
+    - "{tenant_code}/outclearing/correspondent/duplicate"
+    # Outclearing Return — core-banking
+    - "{tenant_code}/outclearing-return/core-banking/inbound"
+    - "{tenant_code}/outclearing-return/core-banking/processed"
+    - "{tenant_code}/outclearing-return/core-banking/archive"
+    - "{tenant_code}/outclearing-return/core-banking/error"
+    - "{tenant_code}/outclearing-return/core-banking/duplicate"
+    # Outclearing Return — card-system
+    - "{tenant_code}/outclearing-return/card-system/inbound"
+    - "{tenant_code}/outclearing-return/card-system/processed"
+    - "{tenant_code}/outclearing-return/card-system/archive"
+    - "{tenant_code}/outclearing-return/card-system/error"
+    - "{tenant_code}/outclearing-return/card-system/duplicate"
+    # Outclearing Return — loan-system
+    - "{tenant_code}/outclearing-return/loan-system/inbound"
+    - "{tenant_code}/outclearing-return/loan-system/processed"
+    - "{tenant_code}/outclearing-return/loan-system/archive"
+    - "{tenant_code}/outclearing-return/loan-system/error"
+    - "{tenant_code}/outclearing-return/loan-system/duplicate"
+    # Engine folders
+    - "{tenant_code}/engines/data-ingestion/messages"
+    - "{tenant_code}/engines/data-ingestion/archive"
+    - "{tenant_code}/engines/fde/messages"
+    - "{tenant_code}/engines/fde/archive"
+    - "{tenant_code}/engines/cde/messages"
+    - "{tenant_code}/engines/cde/archive"
+    - "{tenant_code}/engines/iqv/messages"
+    - "{tenant_code}/engines/iqv/archive"
+    - "{tenant_code}/engines/dqv/messages"
+    - "{tenant_code}/engines/dqv/archive"
+    - "{tenant_code}/engines/dup-detect/messages"
+    - "{tenant_code}/engines/dup-detect/archive"
+    - "{tenant_code}/engines/br-engine/messages"
+    - "{tenant_code}/engines/br-engine/archive"
+    - "{tenant_code}/engines/cashletter/messages"
+    - "{tenant_code}/engines/cashletter/archive"
+    - "{tenant_code}/engines/image-archive/messages"
+    - "{tenant_code}/engines/image-archive/archive"
+    - "{tenant_code}/engines/posting-eod/messages"
+    - "{tenant_code}/engines/posting-eod/archive"
+    - "{tenant_code}/engines/tae/messages"
+    - "{tenant_code}/engines/tae/archive"
+    - "{tenant_code}/engines/eie/messages"
+    - "{tenant_code}/engines/eie/archive"
+    # Cashletter Output
+    - "{tenant_code}/cashletter-output/forward"
+    - "{tenant_code}/cashletter-output/return"
+    # Image Archive
+    - "{tenant_code}/image-archive/ciff"
+    - "{tenant_code}/image-archive/cof"
+    # Posting EOD
+    - "{tenant_code}/posting-eod/posting"
+    - "{tenant_code}/posting-eod/gl-extract"
+    - "{tenant_code}/posting-eod/reports"

@@ -342,7 +342,9 @@ def main() -> int:
     region = args.region or provision_cfg.get("aws_region") or "us-east-1"
     dlq_max_receive = int(provision_cfg.get("sqs_dlq_max_receive_count", 3))
     visibility_timeout = int(provision_cfg.get("sqs_visibility_timeout", 30))
-    s3_folders = provision_cfg.get("s3_folders") or []
+    tenant_code = metadata.get("tenant_code") or args.tenant.upper()
+    raw_folders = provision_cfg.get("s3_folders") or []
+    s3_folders = [f.replace("{tenant_code}", tenant_code) for f in raw_folders]
 
     print(f"Tenant:       {args.tenant}")
     print(f"Environment:  {args.env}")
@@ -351,6 +353,10 @@ def main() -> int:
 
     # Discover queues and S3 buckets from env.json files
     queue_names, s3_buckets = discover_resources(repo_root, args.tenant)
+
+    # Merge additional queues declared explicitly in metadata.yaml
+    additional_queues = provision_cfg.get("additional_sqs_queues") or []
+    queue_names.update(q for q in additional_queues if q and not q.endswith("_DLQ"))
 
     if not queue_names and not s3_buckets:
         print("No SQS queues or S3 buckets discovered — nothing to provision.", file=sys.stderr)
