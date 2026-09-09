@@ -176,16 +176,27 @@ def sync_service(
             string_count += 1
 
     if secrets_file.exists() and not skip_secrets:
-        for key, value in load_json(secrets_file).items():
-            put_parameter(
-                client,
-                f"{base_path}/{key}",
-                str(value),
-                "SecureString",
-                kms_key_id,
-                dry_run,
-            )
-            secure_count += 1
+        if dry_run:
+            # Skip SOPS decryption in dry-run — count keys from raw JSON instead
+            try:
+                raw = json.loads(secrets_file.read_text(encoding="utf-8"))
+                keys = [k for k in raw if k != "sops"]
+            except Exception:
+                keys = []
+            for key in keys:
+                print(f"  [dry-run] would put SecureString: {base_path}/{key}")
+                secure_count += 1
+        else:
+            for key, value in load_json(secrets_file).items():
+                put_parameter(
+                    client,
+                    f"{base_path}/{key}",
+                    str(value),
+                    "SecureString",
+                    kms_key_id,
+                    dry_run,
+                )
+                secure_count += 1
 
     return string_count, secure_count
 
