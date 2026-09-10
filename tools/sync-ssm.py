@@ -258,7 +258,7 @@ def main() -> int:
         )
         return 1
 
-    tenant_dir = args.repo_root / "tenants" / args.tenant
+    tenant_dir = args.repo_root / "tenants" / args.tenant / args.env
     services = args.service if args.service else discover_services(tenant_dir)
     if not services:
         print(f"No services found in {tenant_dir}", file=sys.stderr)
