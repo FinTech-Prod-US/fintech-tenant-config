@@ -12,7 +12,13 @@
       "AWS_ACCOUNT_ID",
       "JWT_ACCESS_SECRET",
       "JWT_REFRESH_SECRET",
-      "DB_PASSWORD"
+      "DB_PASSWORD",
+      "SQS_QUEUE_IMAGE_REPAIR",
+      "SQS_QUEUE_PAYMENT_REPAIR",
+      "SQS_QUEUE_FRAUD_REVIEW",
+      "SQS_QUEUE_DUP_ENGINE",
+      "SQS_QUEUE_S3_TO_DI",
+      "DATA_INGESTION_URL"
     ]
   },
   "accs-ui": {
@@ -20,7 +26,8 @@
       "NEXT_PUBLIC_APP_NAME",
       "NEXT_PUBLIC_BASE_PATH",
       "NEXT_PUBLIC_JAVA_API_URL",
-      "NEXT_PUBLIC_NODE_API_URL"
+      "NEXT_PUBLIC_NODE_API_URL",
+      "ACCS_NODE_UPSTREAM_URL"
     ]
   },
   "api-aggregator-service": {
