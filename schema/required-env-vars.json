@@ -68,6 +68,24 @@
       "WORKER_MAX_MESSAGES"
     ]
   },
+  "copilot-api": {
+    "required": [
+      "NODE_ENV",
+      "PORT",
+      "AWS_REGION",
+      "BEDROCK_MODEL_ID",
+      "BEDROCK_EMBED_MODEL",
+      "BEDROCK_MAX_TOKENS",
+      "BEDROCK_TEMPERATURE",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_USER",
+      "DB_PASS",
+      "DB_NAME",
+      "CHROMA_URL",
+      "ALLOWED_ORIGINS"
+    ]
+  },
   "data-ingestion-service-express": {
     "required": [
       "NODE_ENV",

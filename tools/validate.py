@@ -28,6 +28,7 @@ except ImportError:
 REQUIRED_VARS = {
     "api-aggregator-service": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_BUSINESS_RULES"],
     "business-rules-engine": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_BUSINESS_RULES", "DB_NAME_PRIMARY"],
+    "copilot-api": ["NODE_ENV", "PORT", "AWS_REGION", "BEDROCK_MODEL_ID", "BEDROCK_EMBED_MODEL", "BEDROCK_MAX_TOKENS", "BEDROCK_TEMPERATURE", "DB_HOST", "DB_PORT", "DB_USER", "DB_PASS", "DB_NAME", "CHROMA_URL", "ALLOWED_ORIGINS"],
     "data-ingestion-service-express": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_PRIMARY"],
     "file-data-enrichment-engine": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_PRIMARY", "DB_NAME_BUSINESS_RULES", "DB_NAME_ACCS"],
     "ecs-taeengine": ["DB_NAME_PRIMARY"],
