@@ -18,6 +18,7 @@
       "SQS_QUEUE_FRAUD_REVIEW",
       "SQS_QUEUE_DUP_ENGINE",
       "SQS_QUEUE_S3_TO_DI",
+      "SQS_QUEUE_DATA_ING_TO_FDE",
       "DATA_INGESTION_URL"
     ]
   },
