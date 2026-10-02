@@ -18,6 +18,10 @@
       "SQS_QUEUE_FRAUD_REVIEW",
       "SQS_QUEUE_DUP_ENGINE",
       "SQS_QUEUE_S3_TO_DI",
+      "TAE_ENGINE_URL",
+      "TAE_BANK_ID",
+      "EIE_ENGINE_URL",
+      "EIE_BANK_ID",
       "DATA_INGESTION_URL"
     ]
   },
@@ -146,7 +150,9 @@
   },
   "ecs-taeengine": {
     "required": [
-      "DB_NAME_PRIMARY"
+      "DB_NAME_PRIMARY",
+      "DATA_SERVICES_API_URL",
+      "TAE_DATA_INGESTION_URL"
     ]
   },
   "file-data-enrichment-engine": {
@@ -167,7 +173,11 @@
     ]
   },
   "moov-io-accs": {
-    "required": []
+    "required": [
+      "READER_BUFFER_SIZE",
+      "HTTP_PORT",
+      "HEALTH_PORT"
+    ]
   },
   "moov-io-fed-accs": {
     "required": []
