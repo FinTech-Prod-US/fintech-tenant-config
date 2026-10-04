@@ -35,6 +35,11 @@
       "ACCS_NODE_UPSTREAM_URL"
     ]
   },
+  "accs-customer-advice-engine": {
+    "required": [
+      "SERVER_PORT"
+    ]
+  },
   "api-aggregator-service": {
     "required": [
       "NODE_ENV",

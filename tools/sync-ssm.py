@@ -43,6 +43,7 @@ from botocore.exceptions import ClientError
 DEFAULT_SERVICES = [
     "accs-server",
     "accs-ui",
+    "accs-customer-advice-engine",
     "api-aggregator-service",
     "business-rules-engine",
     "data-ingestion-service-express",
@@ -123,6 +124,10 @@ def put_parameter(
     kms_key_id: str | None,
     dry_run: bool,
 ) -> None:
+    if value is None or str(value) == "":
+        print(f"  skip empty: {name}")
+        return
+
     if dry_run:
         print(f"  [dry-run] would put {param_type}: {name}")
         return
