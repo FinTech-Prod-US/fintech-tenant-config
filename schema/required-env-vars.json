@@ -23,7 +23,8 @@
       "TAE_BANK_ID",
       "EIE_ENGINE_URL",
       "EIE_BANK_ID",
-      "DATA_INGESTION_URL"
+      "DATA_INGESTION_URL",
+      "S3_BUCKET"
     ]
   },
   "accs-ui": {
