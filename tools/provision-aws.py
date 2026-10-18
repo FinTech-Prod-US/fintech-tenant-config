@@ -114,15 +114,29 @@ def _simple_yaml_load(text: str) -> dict:
     return result
 
 
-def load_metadata(repo_root: Path, tenant: str) -> dict:
-    path = repo_root / "tenants" / tenant / "metadata.yaml"
-    if not path.exists():
-        print(f"WARNING: metadata.yaml not found at {path}", file=sys.stderr)
-        return {}
-    text = path.read_text(encoding="utf-8")
-    if _YAML_AVAILABLE:
-        return yaml.safe_load(text) or {}
-    return _simple_yaml_load(text)
+def load_metadata(repo_root: Path, tenant: str, env: Optional[str] = None) -> dict:
+    """Load provision config. Prefer tenants/<tenant>/<env>/metadata.yaml.
+
+    ENVIRONMENT=local has no tenants/<tenant>/local/ folder, so fall back to
+    the dev metadata (same MCB_ queue names) then tenants/<tenant>/metadata.yaml.
+    """
+    candidates: list[Path] = []
+    if env and env != "local":
+        candidates.append(repo_root / "tenants" / tenant / env / "metadata.yaml")
+    if env == "local":
+        candidates.append(repo_root / "tenants" / tenant / "dev" / "metadata.yaml")
+    candidates.append(repo_root / "tenants" / tenant / "metadata.yaml")
+
+    for path in candidates:
+        if path.exists():
+            print(f"Using metadata: {path}")
+            text = path.read_text(encoding="utf-8")
+            if _YAML_AVAILABLE:
+                return yaml.safe_load(text) or {}
+            return _simple_yaml_load(text)
+
+    print(f"WARNING: metadata.yaml not found (looked at: {', '.join(str(p) for p in candidates)})", file=sys.stderr)
+    return {}
 
 
 # ── Discovery ──────────────────────────────────────────────────────────────────
@@ -323,6 +337,12 @@ def main() -> int:
     parser.add_argument("--env", required=True, help="Environment (qa, dev, prod, etc.)")
     parser.add_argument("--region", help="AWS region (overrides metadata.yaml)")
     parser.add_argument("--endpoint-url", help="Override AWS endpoint (e.g. LocalStack)")
+    parser.add_argument(
+        "--extra-bucket",
+        action="append",
+        default=[],
+        help="Additional S3 bucket name to create (repeatable; used for local Docker aliases)",
+    )
     parser.add_argument("--apply", action="store_true", help="Apply changes (default: dry-run)")
     parser.add_argument("--teardown", action="store_true", help="Delete all provisioned resources (DESTRUCTIVE)")
     parser.add_argument(
@@ -336,7 +356,7 @@ def main() -> int:
     dry_run = not args.apply and not args.teardown
 
     repo_root = args.repo_root
-    metadata = load_metadata(repo_root, args.tenant)
+    metadata = load_metadata(repo_root, args.tenant, args.env)
     provision_cfg = metadata.get("provision", {}) or {}
 
     region = args.region or provision_cfg.get("aws_region") or "us-east-1"
@@ -353,6 +373,7 @@ def main() -> int:
 
     # Discover queues and S3 buckets from env.json files
     queue_names, s3_buckets = discover_resources(repo_root, args.tenant)
+    s3_buckets.update(b for b in (args.extra_bucket or []) if b)
 
     # Merge additional queues declared explicitly in metadata.yaml
     additional_queues = provision_cfg.get("additional_sqs_queues") or []
