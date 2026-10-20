@@ -94,6 +94,7 @@
       "DB_USER",
       "DB_PASS",
       "DB_NAME",
+      "DB_NAME_POSTGRES",
       "PG_URL",
       "ALLOWED_ORIGINS"
     ]
