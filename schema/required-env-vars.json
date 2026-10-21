@@ -99,6 +99,24 @@
       "ALLOWED_ORIGINS"
     ]
   },
+  "public-chat-api": {
+    "required": [
+      "NODE_ENV",
+      "PUBLIC_PORT",
+      "AWS_REGION",
+      "BEDROCK_MODEL_ID",
+      "BEDROCK_EMBED_MODEL",
+      "PUBLIC_ALLOWED_ORIGINS",
+      "PUBLIC_TRUST_PROXY_HOPS",
+      "PUBLIC_DAILY_BUDGET_USD",
+      "PUBLIC_PRICE_INPUT_PER_1K",
+      "PUBLIC_PRICE_OUTPUT_PER_1K",
+      "PUBLIC_PRICE_EMBED_PER_1K",
+      "PUBLIC_PG_URL",
+      "LLM_ACCESS_KEY_ID",
+      "LLM_SECRET_ACCESS_KEY"
+    ]
+  },
   "data-ingestion-service-express": {
     "required": [
       "NODE_ENV",

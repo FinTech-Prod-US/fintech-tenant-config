@@ -29,6 +29,9 @@ REQUIRED_VARS = {
     "api-aggregator-service": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_BUSINESS_RULES"],
     "business-rules-engine": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_BUSINESS_RULES", "DB_NAME_PRIMARY"],
     "copilot-api": ["NODE_ENV", "PORT", "AWS_REGION", "BEDROCK_MODEL_ID", "BEDROCK_EMBED_MODEL", "BEDROCK_MAX_TOKENS", "BEDROCK_TEMPERATURE", "DB_HOST", "DB_PORT", "DB_USER", "DB_PASS", "DB_NAME", "DB_NAME_POSTGRES", "PG_URL", "ALLOWED_ORIGINS"],
+    # Public website chat (copilot-api image, `node dist/public/server.js`). PUBLIC_PG_URL and the
+    # LLM_* keys live in its SOPS-encrypted secrets.json.
+    "public-chat-api": ["NODE_ENV", "PUBLIC_PORT", "AWS_REGION", "BEDROCK_MODEL_ID", "BEDROCK_EMBED_MODEL", "PUBLIC_ALLOWED_ORIGINS", "PUBLIC_TRUST_PROXY_HOPS", "PUBLIC_DAILY_BUDGET_USD", "PUBLIC_PRICE_INPUT_PER_1K", "PUBLIC_PRICE_OUTPUT_PER_1K", "PUBLIC_PRICE_EMBED_PER_1K", "PUBLIC_PG_URL", "LLM_ACCESS_KEY_ID", "LLM_SECRET_ACCESS_KEY"],
     "accs-customer-advice-engine": ["SERVER_PORT"],
     "data-ingestion-service-express": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_PRIMARY"],
     "file-data-enrichment-engine": ["NODE_ENV", "PORT", "DB_HOST", "DB_PORT", "DB_USER", "DB_NAME_PRIMARY", "DB_NAME_BUSINESS_RULES", "DB_NAME_ACCS"],
@@ -37,6 +40,12 @@ REQUIRED_VARS = {
 
 
 PLACEHOLDER_PATTERNS = ["<", ">", "TODO", "FIXME", "set-in-ssm"]
+
+# Keys a service must never receive. The public website chat is unauthenticated and must not
+# hold internal database credentials (the service itself also refuses to start with them).
+FORBIDDEN_VARS = {
+    "public-chat-api": ["DB_HOST", "DB_PORT", "DB_USER", "DB_PASS", "DB_NAME", "PG_URL", "PG_URL_DEV", "PG_URL_QA"],
+}
 
 
 def load_json(path: Path) -> dict:
@@ -84,6 +93,9 @@ def validate_service(tenant_dir: Path, service: str) -> list[str]:
     missing = [k for k in required if k not in all_vars]
     if missing:
         errors.append(f"{service}: missing required keys: {', '.join(missing)}")
+    forbidden = [k for k in FORBIDDEN_VARS.get(service, []) if k in all_vars]
+    if forbidden:
+        errors.append(f"{service}: must not define {', '.join(forbidden)}")
 
     for key, value in all_vars.items():
         if value is None or value == "":
