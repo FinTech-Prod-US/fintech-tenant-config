@@ -96,6 +96,7 @@
       "DB_NAME",
       "DB_NAME_POSTGRES",
       "PG_URL",
+      "PUBLIC_PG_URL",
       "ALLOWED_ORIGINS",
       "PUBLIC_ALLOWED_ORIGINS",
       "PUBLIC_TRUST_PROXY_HOPS",
