@@ -39,7 +39,13 @@
   },
   "accs-customer-advice-engine": {
     "required": [
-      "SERVER_PORT"
+      "SERVER_PORT",
+      "SPRING_PROFILES_ACTIVE",
+      "DB_HOST",
+      "DB_PORT",
+      "DB_NAME_PRIMARY",
+      "DB_USERNAME",
+      "DB_PASSWORD"
     ]
   },
   "api-aggregator-service": {
