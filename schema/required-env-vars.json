@@ -45,7 +45,9 @@
       "DB_PORT",
       "DB_NAME_PRIMARY",
       "DB_USERNAME",
-      "DB_PASSWORD"
+      "DB_PASSWORD",
+      "ADVICE_S3_BUCKET",
+      "DATA_SERVICES_API_URL"
     ]
   },
   "api-aggregator-service": {
