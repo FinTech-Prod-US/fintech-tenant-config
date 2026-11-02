@@ -20,6 +20,7 @@ services:
 - file-data-enrichment-engine
 - moov-io-accs
 - moov-io-fed-accs
+- accs-customer-advice-engine
 - accs-research-archive-engine
 ssm_prefix: /fintech/mcb/dev
 tenant_code: MCB
