@@ -202,5 +202,15 @@
   },
   "moov-io-fed-accs": {
     "required": []
+  },
+  "accs-research-archive-engine": {
+    "required": [
+      "DB_NAME_PRIMARY",
+      "DB_NAME_DUP_DETECT",
+      "DB_NAME_ARCHIVE",
+      "DB_NAME_BUSINESS_RULES",
+      "ARCHIVE_IMAGE_BUCKET",
+      "DATA_SERVICES_API_URL"
+    ]
   }
 }

@@ -60,6 +60,7 @@ DEFAULT_SERVICES = [
     "file-data-enrichment-engine",
     "moov-io-accs",
     "moov-io-fed-accs",
+    "accs-research-archive-engine",
 ]
 
 
