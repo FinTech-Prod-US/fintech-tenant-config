@@ -141,6 +141,29 @@ aws --endpoint-url http://localhost:4566 ssm get-parameters-by-path \
 3. Change database names, queue URLs, and other tenant-specific values.
 4. Run `validate.py` and `sync-ssm.py`.
 
+## Accs-Server: early access sheet secrets
+
+Accs-Server saves "Request Early Access" submissions to a Google Sheet through a Google Apps Script web app
+(no SMTP, no database). It needs two secrets per environment, in `tenants/mcb/<env>/accs-server/secrets.json`
+(encrypted with SOPS like every other secret):
+
+| Key | Value |
+|---|---|
+| `ONBOARDING_SHEET_URL` | the Apps Script web app URL (ends in `/exec`) |
+| `ONBOARDING_SHEET_SECRET` | the same value as `SHARED_SECRET` in that script's Script Properties |
+
+- **One sheet per environment:** use a different URL (and a different secret) in `dev` and `qa`.
+- **Add them:** `sops tenants/mcb/<env>/accs-server/secrets.json`, add both keys, save, then run the normal
+  validate, dry-run and sync steps above.
+- **If they are missing,** `POST /api/onboarding/submit` answers 503 and the form shows an error. It never
+  reports a request as received when it was not saved.
+- **Setup guide for the Google side** (create the sheet, paste the script, set the secret and the recipient list,
+  deploy the web app): `docs/onboarding-sheet/README.md` in the Accs-Server repo.
+- **Required list:** once every environment has both values, add `ONBOARDING_SHEET_URL` and
+  `ONBOARDING_SHEET_SECRET` to `accs-server` in `schema/required-env-vars.json`. Not before, or `validate.py`
+  fails for the environment that does not have them yet.
+- The old `SMTP_*` and `ONBOARDING_NOTIFICATION_EMAIL` settings are no longer used by Accs-Server.
+
 ## Required environment variables per service
 
 See `schema/required-env-vars.json`. This is used by `validate.py` to ensure every
