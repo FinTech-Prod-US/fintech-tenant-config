@@ -71,6 +71,7 @@ import sys
 from pathlib import Path
 
 import boto3
+from botocore.config import Config as BotoConfig
 from botocore.exceptions import ClientError
 
 
@@ -270,7 +271,12 @@ def main() -> int:
         print(f"No services found in {tenant_dir}", file=sys.stderr)
         return 1
 
-    client_kwargs = {"region_name": args.region}
+    # Standard SSM Parameter Store allows only a few PutParameter calls per second; a full
+    # tenant is 250+ parameters, so back off and retry instead of failing with ThrottlingException.
+    client_kwargs = {
+        "region_name": args.region,
+        "config": BotoConfig(retries={"max_attempts": 12, "mode": "adaptive"}),
+    }
     if args.endpoint_url:
         client_kwargs["endpoint_url"] = args.endpoint_url
 
